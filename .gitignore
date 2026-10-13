@@ -8,3 +8,4 @@ fixture/www/
 fixture/.stencil/
 fixture/stats.json
 fixture/src/components/*/readme.md
+.flyover.json
