@@ -1,0 +1,17 @@
+:root {
+  /* The brand color, for primary actions. */
+  --my-color-primary: #2563eb;
+  --my-color-surface: #ffffff;
+  --my-color-text: #111827;
+  /* One step of the spacing scale. */
+  --my-space-2: 0.5rem;
+  --my-space-4: 1rem;
+  --my-radius: 0.375rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --my-color-surface: #111827;
+    --my-color-text: #f9fafb;
+  }
+}

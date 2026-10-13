@@ -1,0 +1,11 @@
+dist/
+node_modules/
+fixture/dist/
+fixture/docs/
+fixture/mcp/
+fixture/mcp-zero/
+fixture/www/
+fixture/.stencil/
+fixture/stats.json
+fixture/src/components.d.ts
+fixture/src/components/*/readme.md

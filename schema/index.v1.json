@@ -1,0 +1,1118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://unpkg.com/stencil-mcp-output-target/schema/index.v1.json",
+  "title": "stencil-mcp-output-target index, schema version 1",
+  "description": "Everything a library's MCP server knows: mcp/index.json, written by mcpOutputTarget() and read by mcp/server.mjs.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "generator": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "library": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "package": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "prefix"
+      ],
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "examples": {
+          "type": "boolean"
+        },
+        "categories": {
+          "type": "boolean"
+        },
+        "guidance": {
+          "type": "boolean"
+        },
+        "accessibility": {
+          "type": "boolean"
+        },
+        "intents": {
+          "type": "boolean"
+        },
+        "rules": {
+          "type": "boolean"
+        },
+        "tokens": {
+          "type": "boolean"
+        },
+        "tokenUsage": {
+          "type": "boolean"
+        },
+        "frameworks": {
+          "type": "boolean"
+        },
+        "migrations": {
+          "type": "boolean"
+        },
+        "changelog": {
+          "type": "boolean"
+        },
+        "sizes": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "examples",
+        "categories",
+        "guidance",
+        "accessibility",
+        "intents",
+        "rules",
+        "tokens",
+        "tokenUsage",
+        "frameworks",
+        "migrations",
+        "changelog",
+        "sizes"
+      ],
+      "additionalProperties": false
+    },
+    "disabledTools": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "list_components",
+          "get_component_api",
+          "search_components",
+          "get_component_examples",
+          "validate_component_usage",
+          "suggest_components",
+          "get_component_relationships",
+          "get_design_tokens",
+          "get_token_usage",
+          "get_framework_usage",
+          "get_migration_guide",
+          "get_bundle_analysis",
+          "get_accessibility_info",
+          "diagnose_component",
+          "generate_snippet"
+        ]
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "tokens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "sizes": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "enum": [
+            "stats",
+            "measured",
+            null
+          ]
+        },
+        "components": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "entry": {
+                "type": "string"
+              },
+              "entryBytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "totalBytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "shared": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "entry",
+              "entryBytes",
+              "shared"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "source",
+        "components"
+      ],
+      "additionalProperties": false
+    },
+    "guidance": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "antiPatterns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "bad": {
+                  "type": "string"
+                },
+                "good": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "bestPractices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "example": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "keyboard": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "keys": {
+                  "type": "string"
+                },
+                "does": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "keys",
+                "does"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "aria": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    "intents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          },
+          "when": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ruleTest"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/ruleTest"
+                }
+              }
+            ]
+          },
+          "require": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ruleTest"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/ruleTest"
+                }
+              }
+            ]
+          },
+          "forbid": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ruleTest"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/ruleTest"
+                }
+              }
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "error",
+              "warning"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "tag",
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "frameworks": {
+      "type": "object",
+      "properties": {
+        "react": {
+          "type": "object",
+          "properties": {
+            "package": {
+              "type": "string"
+            },
+            "exclude": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "models": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "event": {
+                    "type": "string"
+                  },
+                  "targetAttr": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "elements",
+                  "event",
+                  "targetAttr"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "valueAccessors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "event": {
+                    "type": "string"
+                  },
+                  "targetAttr": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "elements",
+                  "event",
+                  "targetAttr"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "package"
+          ],
+          "additionalProperties": false
+        },
+        "vue": {
+          "type": "object",
+          "properties": {
+            "package": {
+              "type": "string"
+            },
+            "exclude": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "models": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "event": {
+                    "type": "string"
+                  },
+                  "targetAttr": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "elements",
+                  "event",
+                  "targetAttr"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "valueAccessors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "event": {
+                    "type": "string"
+                  },
+                  "targetAttr": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "elements",
+                  "event",
+                  "targetAttr"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "package"
+          ],
+          "additionalProperties": false
+        },
+        "angular": {
+          "type": "object",
+          "properties": {
+            "package": {
+              "type": "string"
+            },
+            "exclude": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "models": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "event": {
+                    "type": "string"
+                  },
+                  "targetAttr": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "elements",
+                  "event",
+                  "targetAttr"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "valueAccessors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "event": {
+                    "type": "string"
+                  },
+                  "targetAttr": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "elements",
+                  "event",
+                  "targetAttr"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "package"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "migrations": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "props": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string"
+              },
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "tag",
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string"
+              },
+              "prop": {
+                "type": "string"
+              },
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "tag",
+              "prop",
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "tags",
+        "props",
+        "values"
+      ],
+      "additionalProperties": false
+    },
+    "changelog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "generator",
+    "library",
+    "capabilities",
+    "disabledTools",
+    "components",
+    "tokens",
+    "sizes",
+    "guidance",
+    "accessibility",
+    "intents",
+    "rules",
+    "frameworks",
+    "migrations",
+    "changelog"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "ruleTest": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "attr": {
+              "type": "string"
+            },
+            "equals": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "attr"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "slot": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "slot"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "parent": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "parent"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "child": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "child"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "deprecation": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "replacement": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "tag",
+                "prop",
+                "value"
+              ]
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "name"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "component": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "docsTags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "encapsulation": {
+          "enum": [
+            "shadow",
+            "scoped",
+            "none"
+          ]
+        },
+        "formAssociated": {
+          "type": "boolean"
+        },
+        "deprecation": {
+          "$ref": "#/$defs/deprecation"
+        },
+        "props": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "attribute": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "default": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "reflect": {
+                "type": "boolean"
+              },
+              "mutable": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              },
+              "deprecation": {
+                "$ref": "#/$defs/deprecation"
+              }
+            },
+            "required": [
+              "name",
+              "type",
+              "required",
+              "reflect",
+              "mutable",
+              "description"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string"
+              },
+              "bubbles": {
+                "type": "boolean"
+              },
+              "cancelable": {
+                "type": "boolean"
+              },
+              "composed": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              },
+              "deprecation": {
+                "$ref": "#/$defs/deprecation"
+              }
+            },
+            "required": [
+              "name",
+              "detail",
+              "bubbles",
+              "cancelable",
+              "composed",
+              "description"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "signature": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "deprecation": {
+                "$ref": "#/$defs/deprecation"
+              }
+            },
+            "required": [
+              "name",
+              "signature",
+              "description"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "slots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "description"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "description"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "cssProperties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "description"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "markdown": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "title",
+              "markdown"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "tag",
+        "summary",
+        "description",
+        "docsTags",
+        "encapsulation",
+        "formAssociated",
+        "props",
+        "events",
+        "methods",
+        "slots",
+        "parts",
+        "cssProperties",
+        "dependencies",
+        "dependents",
+        "examples",
+        "tokens"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

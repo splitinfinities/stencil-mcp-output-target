@@ -1,0 +1,15 @@
+:host {
+  /**
+   * @prop --my-button-background: The button's background.
+   * @prop --my-button-color: The button's text color.
+   */
+  display: inline-block;
+}
+
+.button {
+  background: var(--my-button-background, var(--my-color-primary));
+  color: var(--my-button-color, var(--my-color-surface));
+  padding: var(--my-space-2) var(--my-space-4);
+  border-radius: var(--my-radius);
+  font-family: var(--my-font-body);
+}

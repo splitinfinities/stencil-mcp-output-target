@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      # What server.mjs bundles is redistributed inside every library: its licenses are checked here.
+      - run: pnpm lint.licenses
+      # schema/index.v1.json is written by a script and committed.
+      - run: node scripts/schema.mjs && git diff --exit-code -- schema
+      # Builds dist/, then the fixture library with real Stencil (twice: with every option, and with none).
+      - run: pnpm build.fixture
+      # Drives the server the fixture's build wrote: in process, over stdio and over HTTP.
+      - run: pnpm test
+      # A second build of the fixture writes the same bytes.
+      - run: |
+          cp fixture/mcp/index.json /tmp/index.first.json
+          pnpm --dir fixture build
+          cmp fixture/mcp/index.json /tmp/index.first.json

@@ -1,0 +1,20 @@
+{
+  "name": "@my/components",
+  "version": "1.2.0",
+  "private": true,
+  "description": "The test library of stencil-mcp-output-target: eight my- components built by real Stencil.",
+  "license": "MIT",
+  "bin": {
+    "components-mcp": "mcp/server.mjs",
+    "components-mcp-install": "mcp/install.mjs",
+    "components-mcp-zero": "mcp-zero/server.mjs",
+    "components-mcp-zero-install": "mcp-zero/install.mjs"
+  },
+  "scripts": {
+    "build": "node ../node_modules/@stencil/core/bin/stencil build --docs && node ../node_modules/@stencil/core/bin/stencil build --docs --config stencil.zero.config.ts"
+  },
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json"
+}

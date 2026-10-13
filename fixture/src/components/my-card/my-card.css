@@ -1,0 +1,4 @@
+.card {
+  background: var(--my-color-surface);
+  padding: var(--my-space-4);
+}
