@@ -42,7 +42,8 @@
     "test": "node --test test/*.test.ts",
     "test.all": "pnpm build.fixture && pnpm test",
     "lint.licenses": "node scripts/check-licenses.mjs",
-    "prepublishOnly": "pnpm typecheck && pnpm lint.licenses && pnpm test.all"
+    "prepublishOnly": "pnpm typecheck && pnpm lint.licenses && pnpm test.all",
+    "release": "node scripts/release.mjs"
   },
   "publishConfig": {
     "access": "public"

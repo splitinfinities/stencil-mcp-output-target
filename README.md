@@ -431,6 +431,16 @@ node scripts/schema.mjs   # schema/index.v1.json
 - `fixture/` is a library of eight `my-` components. The tests never mock the server: they import or spawn `fixture/mcp/server.mjs`, the file a real Stencil build wrote, and run `fixture/mcp/install.mjs` in scratch projects.
 - The MCP SDK and parse5 are pinned exactly. An SDK upgrade rewrites `server.mjs` in every adopting library, so batch it into a release, and add any package the SDK newly bundles to `PREBUNDLED` in `scripts/bundle.mjs` (the build fails until you do).
 
+### Releasing
+
+```sh
+npm login                          # once
+pnpm release 0.1.0 --dry-run       # the checks, the builds, the tarball and npm publish --dry-run; changes nothing
+pnpm release 0.1.0                 # or patch, minor, major
+```
+
+`scripts/release.mjs` checks the tree is clean and on `main` and that the version is new, then runs the typecheck, the license check and the schema script (which must change nothing). The version is bumped before the build, because the build stamps it into `server.mjs`; then it builds the fixture and runs the tests. It checks the tarball's contents, that the built entry points load, that `dist/server.mjs --version` is the new version and that `dist/install.mjs` runs, publishes to npm, and then commits the version, tags it `v<version>` and pushes both when the repository has a remote. A prerelease (`0.2.0-next.0`) goes out under the `next` dist-tag. Other flags: `--tag <name>`, `--otp <code>`, `--no-push`, `--any-branch`.
+
 ## License
 
 MIT. `server.mjs` bundles third-party software under the Apache-2.0, MIT, BSD-2-Clause and BSD-3-Clause licenses; their notices are in its header.
