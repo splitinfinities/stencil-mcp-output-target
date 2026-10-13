@@ -27,6 +27,8 @@ jobs:
       # schema/index.v1.json is written by a script and committed.
       - run: node scripts/schema.mjs && git diff --exit-code -- schema
       # Builds dist/, then the fixture library with real Stencil (twice: with every option, and with none).
+      # fixture/src/components.d.ts is committed: without it Stencil's first build names its chunks
+      # differently from every later one, and the stats file and dist/ then disagree.
       - run: pnpm build.fixture
       # Drives the server the fixture's build wrote: in process, over stdio and over HTTP.
       - run: pnpm test
