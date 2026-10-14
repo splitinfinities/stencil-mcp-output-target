@@ -1,6 +1,6 @@
 {
   "name": "stencil-mcp-output-target",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Stencil output target that ships a read-only MCP server inside your component library: list, search, read, validate, suggest and diagnose against the library's real API.",
   "keywords": [
     "stencil",
