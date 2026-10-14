@@ -33,7 +33,9 @@ test('server.mjs is the output target\'s bundle, byte for byte, with a version h
   assert.equal(server, readFileSync(serverPath('mcp-zero'), 'utf8'));
   assert.ok(server.startsWith(`#!/usr/bin/env node\n// stencil-mcp-output-target server v${own.version}\n`));
 
-  for (const notice of ['@modelcontextprotocol/server', 'Apache License', 'parse5', 'zod', 'ajv (MIT)', 'Permission is hereby granted, free of charge']) assert.ok(server.includes(notice), notice);
+  for (const notice of ['@modelcontextprotocol/server', 'Apache License', 'parse5', 'zod', '@cfworker/json-schema (MIT)', 'Permission is hereby granted, free of charge']) assert.ok(server.includes(notice), notice);
+  // Ajv and its URI resolver stay out: the runtime brings its own validator.
+  for (const absent of ['ajv', 'fast-uri']) assert.ok(!server.includes(`${absent} (`), absent);
   // It holds no library data.
   for (const data of ['@my/components', 'Cards do not nest', 'A button or a link']) assert.ok(!server.includes(data), data);
   assert.equal(execFileSync(process.execPath, [serverPath(), '--version'], { encoding: 'utf8' }).trim(), own.version);

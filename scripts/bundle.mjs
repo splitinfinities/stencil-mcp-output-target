@@ -17,13 +17,20 @@ export const ALLOWED_LICENSES = ['MIT', 'Apache-2.0', 'BSD-2-Clause', 'BSD-3-Cla
 
 /** Packages the MCP SDK ships inside its own dist files. Their LICENSE files aren't installed, so the notices are kept here. */
 const PREBUNDLED = {
-  ajv: { license: 'MIT', notice: 'Copyright (c) 2015-2021 Evgeny Poberezkin' },
-  'ajv-formats': { license: 'MIT', notice: 'Copyright (c) 2020 Evgeny Poberezkin' },
-  'fast-deep-equal': { license: 'MIT', notice: 'Copyright (c) 2017 Evgeny Poberezkin' },
-  'json-schema-traverse': { license: 'MIT', notice: 'Copyright (c) 2017 Evgeny Poberezkin' },
-  'fast-uri': { license: 'BSD-3-Clause', notice: 'Copyright (c) 2011-2021, Gary Court until https://github.com/garycourt/uri-js/commit/a1acf730b4bba3f1097c9f52e7d9d3aba8cdcaae; Copyright (c) 2021-present The Fastify team. All rights reserved.' },
   'content-type': { license: 'MIT', notice: 'Copyright (c) 2015 Douglas Christopher Wilson' },
   '@cfworker/json-schema': { license: 'MIT', notice: 'Copyright (c) 2020 Jeremy Danyow' },
+};
+
+/**
+ * The SDK's Node shim imports Ajv as its default validator, which bundles Ajv, ajv-formats,
+ * fast-uri, fast-deep-equal and json-schema-traverse whether or not it's used. The runtime
+ * passes its own validator, so the shim is swapped for one whose default is that validator.
+ */
+const SHIMS = {
+  name: 'sdk-shims',
+  setup(build) {
+    build.onResolve({ filter: /^@modelcontextprotocol\/server\/_shims$/ }, () => ({ path: join(ROOT, 'runtime/node-shims.ts') }));
+  },
 };
 
 const MIT = `Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -89,6 +96,7 @@ export async function bundleServer() {
     legalComments: 'none',
     logLevel: 'warning',
     define: { __SERVER_VERSION__: JSON.stringify(own.version) },
+    plugins: [SHIMS],
   });
 
   const [output] = Object.values(result.metafile.outputs);
@@ -126,7 +134,12 @@ export async function bundleServer() {
     ...inner.map((pkg) => `  ${pkg.name} (${pkg.license}), inside @modelcontextprotocol/server. ${pkg.notice}`),
     '',
     ...sorted.flatMap((pkg) => ['-'.repeat(78), `${pkg.name} ${pkg.version}`, '', pkg.text ?? `(${pkg.license}; the package ships no license file)`, '']),
-    ...Object.entries(TEXTS).flatMap(([license, text]) => (inner.some((pkg) => pkg.license === license) ? ['-'.repeat(78), `${license}, for ${inner.filter((pkg) => pkg.license === license).map((pkg) => pkg.name).join(', ')} (copyright lines above)`, '', text, ''] : [])),
+    ...inner.filter((pkg) => pkg.text).flatMap((pkg) => ['-'.repeat(78), `${pkg.name}, inside @modelcontextprotocol/server`, '', pkg.text, '']),
+    ...Object.entries(TEXTS).flatMap(([license, text]) => {
+      const names = inner.filter((pkg) => pkg.license === license && !pkg.text).map((pkg) => pkg.name);
+
+      return names.length > 0 ? ['-'.repeat(78), `${license}, for ${names.join(', ')} (copyright lines above)`, '', text, ''] : [];
+    }),
     '-'.repeat(78),
   ].join('\n');
 

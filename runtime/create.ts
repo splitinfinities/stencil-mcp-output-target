@@ -8,6 +8,7 @@ import { bounded, MAX_INPUT_ELEMENTS, SHARED_OUTPUT, type Args, type ToolDefinit
 import { diagnoseComponent, generateSnippet, getFrameworkUsage, suggestComponents, validateComponentUsage } from './tools/advise.ts';
 import { getAccessibilityInfo, getBundleAnalysis, getDesignTokens, getMigrationGuide, getTokenUsage } from './tools/data.ts';
 import { getComponentApi, getComponentExamples, getComponentRelationships, listComponents, searchComponents } from './tools/lookup.ts';
+import { validator } from './validator.ts';
 
 declare const __SERVER_VERSION__: string | undefined;
 
@@ -82,8 +83,8 @@ const TOOL_SCHEMAS = new Map(
   TOOLS.map((tool) => [
     tool.name,
     {
-      input: fromJsonSchema<Args>({ ...bounded({ type: 'object', properties: tool.input.properties }), required: tool.input.required ?? [], additionalProperties: false }),
-      output: fromJsonSchema({ type: 'object', properties: { ...SHARED_OUTPUT, ...tool.output } }),
+      input: fromJsonSchema<Args>({ ...bounded({ type: 'object', properties: tool.input.properties }), required: tool.input.required ?? [], additionalProperties: false }, validator),
+      output: fromJsonSchema({ type: 'object', properties: { ...SHARED_OUTPUT, ...tool.output } }, validator),
     },
   ]),
 );
@@ -95,7 +96,7 @@ const PROMPT_SCHEMAS = new Map(
       type: 'object',
       properties: Object.fromEntries(prompt.arguments.map((argument) => [argument.name, { type: 'string', description: argument.description }])),
       required: prompt.arguments.flatMap((argument) => (argument.required ? [argument.name] : [])),
-    }),
+    }, validator),
   ]),
 );
 
@@ -103,7 +104,7 @@ const PROMPT_SCHEMAS = new Map(
 export function createServer(indexJson: unknown, log: Log = () => {}): McpServer {
   const library = libraryFor(checkIndex(indexJson));
   const { index } = library;
-  const server = new McpServer({ name: index.library.name, version: index.library.version ?? SERVER_VERSION }, { instructions: instructions(library), maxToolInputElements: MAX_INPUT_ELEMENTS });
+  const server = new McpServer({ name: index.library.name, version: index.library.version ?? SERVER_VERSION }, { instructions: instructions(library), maxToolInputElements: MAX_INPUT_ELEMENTS, jsonSchemaValidator: validator });
 
   const timed = <T>(what: string, run: () => T): T => {
     const start = performance.now();
